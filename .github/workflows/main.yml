@@ -11,7 +11,7 @@ defaults:
 jobs:
 
   make-docker-images:
-    name: Build docker image for ${{ matrix.postgres }}-${{ matrix.postgis }}
+    name: Build docker image for 3.16
     runs-on: ubuntu-20.04
     env:
       VERSION: 3.16
@@ -30,9 +30,9 @@ jobs:
       id: meta
       uses: docker/metadata-action@3a3bb3a81753dc99f090d24ee7e5343838b73a96  # v3.5.0 (2021-10-22)
       with:
-        images: sogis/qgis-server
+        images: sogis/qgis-server-base
         labels: |
-          org.opencontainers.image.title=qgis-server
+          org.opencontainers.image.title=qgis-server-base
           org.opencontainers.image.version=${{ env.VERSION }}
           org.opencontainers.image.base.name=phusion/baseimage:focal-1.1.0
         tags: |
