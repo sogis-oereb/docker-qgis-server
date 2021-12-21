@@ -11,12 +11,6 @@ defaults:
 jobs:
 
   make-docker-images:
-    # strategy:
-    #   matrix:
-    #     # list compatible with arm64; exclude the latest version set for use with "include" below
-    #     postgres: [14]
-    #     postgis: ['3.1']
-    #     latest: [false]
     name: Build docker image for ${{ matrix.postgres }}-${{ matrix.postgis }}
     runs-on: ubuntu-20.04
     env:
@@ -27,8 +21,7 @@ jobs:
     - name: Set up QEMU for amd64 and arm64
       uses: docker/setup-qemu-action@27d0a4f181a40b142cce983c5393082c365d1480  # v1.2.0 (2021-10-22)
       with:
-        platforms: linux/amd64
-        #,linux/arm64
+        platforms: linux/amd64,linux/arm64
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@94ab11c41e45d028884a99163086648e898eed25  # v1.6.0 (2021-10-22)
@@ -55,11 +48,10 @@ jobs:
     - name: Multi-platform build and push
       uses: docker/build-push-action@a66e35b9cbcf4ad0ea91ffcaf7bbad63ad9e0229  # v2.7.0 (2021-10-22)
       with:
-        platforms: linux/amd64
-        #,linux/arm64
+        platforms: linux/amd64,linux/arm64
         #context: github.com/postgis/docker-postgis#master
         #file: Dockerfile
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         pull: false
-        #push: ${{ (github.ref == 'refs/heads/main') && (github.event_name != 'pull_request') && !env.ACT }}
+        push: ${{ (github.ref == 'refs/heads/main') && (github.event_name != 'pull_request') && !env.ACT }}
