@@ -32,6 +32,9 @@ RUN a2enmod rewrite && \
     a2enmod cgid && \
     a2enmod headers
 
+# Configure logrotate for Apache (use apache2ctl instead of invoke-rc)
+RUN sed -i -e 's|invoke-rc\.d\ apache2|/usr/sbin/apache2ctl|g' -e 's|reload|-k\ restart|g' /etc/logrotate.d/apache2
+
 # Writeable dir for qgis_mapserv.log and qgis-auth.db
 RUN mkdir /var/log/qgis && chown www-data:www-data /var/log/qgis
 RUN mkdir /var/lib/qgis && chown www-data:www-data /var/lib/qgis
