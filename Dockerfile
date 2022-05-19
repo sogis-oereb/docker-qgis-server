@@ -6,14 +6,14 @@ ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 #Fonts
-RUN apt-get update && apt-get install -y fontconfig unzip ttf-dejavu ttf-bitstream-vera fonts-liberation ttf-ubuntu-font-family
+RUN apt-get update && apt-get install -y fontconfig unzip ttf-dejavu ttf-bitstream-vera fonts-liberation ttf-ubuntu-font-family && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Additional user fonts
 COPY fonts/ /usr/share/fonts/truetype/
 RUN fc-cache -f && fc-list | sort
 
 #Headless X Server
-RUN apt-get update && apt-get install -y xvfb && \
+RUN apt-get update && apt-get install -y xvfb && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     mkdir -p /etc/service/xvfb
 ADD xvfb-run.sh /etc/service/xvfb/run
 RUN chmod +x /etc/service/xvfb/run
@@ -25,7 +25,8 @@ RUN apt update && apt install -y gnupg wget software-properties-common ca-certif
     add-apt-repository "deb https://qgis.org/ubuntu-ltr $(lsb_release -c -s) main" && \
     apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y apache2 libapache2-mod-fcgid qgis-server && \
-    apt clean all
+    apt clean all && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite && \
     a2enmod cgid && \
