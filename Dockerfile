@@ -19,7 +19,7 @@ ADD xvfb-run.sh /etc/service/xvfb/run
 RUN chmod +x /etc/service/xvfb/run
 
 #QGIS Server
-RUN apt install -y gnupg wget software-properties-common && \
+RUN apt update && apt install -y gnupg wget software-properties-common ca-certificates && \
     wget -qO - https://qgis.org/downloads/qgis-2021.gpg.key | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/qgis-archive.gpg --import && \
     chmod a+r /etc/apt/trusted.gpg.d/qgis-archive.gpg && \
     add-apt-repository "deb https://qgis.org/ubuntu-ltr $(lsb_release -c -s) main" && \
