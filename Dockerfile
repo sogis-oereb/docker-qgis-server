@@ -64,6 +64,3 @@ EXPOSE 80
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
-
-# Clean up downloaded packages
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
